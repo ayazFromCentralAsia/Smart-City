@@ -1,12 +1,12 @@
 package com.example.auth_service.service;
 
-import com.example.auth_service.dto.UserRegistrationRequest;
-import org.keycloak.representations.idm.CredentialRepresentation;
+import com.example.auth_service.dto.ChangeUserInfoRequest;
+import com.example.auth_service.dto.UserAuthRequest;
+import com.example.auth_service.dto.UserInfoResponse;
 
 public interface AuthService {
-    String register(UserRegistrationRequest user);
+    String register(UserAuthRequest user);
     String login(String username, String password);
-    String getUserInfo(String accessToken);
-    String changeUserInformation(String accessToken, UserRegistrationRequest user);
-    String resetPassword(String username, String password);
+    UserInfoResponse getUserInfo(String accessToken);
+    String resetPassword(String userId, String password);
 }

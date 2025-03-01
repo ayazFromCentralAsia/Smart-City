@@ -8,13 +8,13 @@
 		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-
 	<modules>
 		<module>auth-service</module>
 	</modules>
 	<groupId>com.example</groupId>
 	<artifactId>Smart-City</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>Smart-City</name>
 	<description>Microservice-Project</description>
 	<url/>
