@@ -11,7 +11,7 @@ CREATE TABLE stops (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     location_id INT REFERENCES locations(id) ON DELETE CASCADE,
-    facilities TEXT[] -- Массив строк для удобства хранения
+    facilities TEXT[]
 );
 
 CREATE TABLE routes (
