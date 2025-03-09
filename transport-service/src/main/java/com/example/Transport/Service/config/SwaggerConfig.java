@@ -1,4 +1,4 @@
-package com.example.auth_service.config;
+package com.example.Transport.Service.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.OpenAPI;

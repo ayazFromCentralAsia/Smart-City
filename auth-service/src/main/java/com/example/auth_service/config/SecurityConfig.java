@@ -36,6 +36,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/auth-service/swagger-ui/index.html").permitAll()
+                        .requestMatchers("/auth-service/v3/api-docs/**").permitAll()
+                        .requestMatchers("/auth-service/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-ui/index.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
