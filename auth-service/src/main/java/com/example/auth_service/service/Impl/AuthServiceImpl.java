@@ -128,15 +128,25 @@ public class AuthServiceImpl implements AuthService {
             String userId = user.getId();
             List<RoleRepresentation> roles = userResource.roles().realmLevel().listEffective();
             List<String> roleNames = roles.stream().map(RoleRepresentation::getName).collect(Collectors.toList());
+            boolean isTrue = false;
+
             for (String roleName : roleNames) {
-                if (roleName.equals("ADMIN"))
-                    userInfoResponse.setRoles("ADMIN");
-                else if (roleName.equals("OPERATOR"))
-                    userInfoResponse.setRoles("OPERATOR");
-                else if (roleName.equals("USER"))
-                    userInfoResponse.setRoles("USER");
-                else
-                    userInfoResponse.setRoles("ROLE_NOT_FOUND");
+                if (!isTrue) {
+                    if (roleName.equals("ADMIN")) {
+                        userInfoResponse.setRoles("ADMIN");
+                        isTrue = true;
+                    } else if (roleName.equals("OPERATOR")) {
+                        userInfoResponse.setRoles("OPERATOR");
+                        isTrue = true;
+                    } else if (roleName.equals("USER")) {
+                        userInfoResponse.setRoles("USER");
+                        isTrue = true;
+                    }
+                }
+            }
+
+            if (!isTrue) {
+                userInfoResponse.setRoles("ROLE_NOT_FOUND");
             }
             return userInfoResponse;
         } catch (Exception e) {
