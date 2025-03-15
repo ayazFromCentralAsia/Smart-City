@@ -1,50 +1,77 @@
 package com.example.Transport.Service.config;
 
-import org.springframework.context.annotation.Configuration;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimNames;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.stereotype.Component;
 
-import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@Configuration
-public class JwtAuthConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+@Component
+public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
-    private static final String REALM_CLAIM = "realm_access";
-    private static final String ROLES_CLAIM = "roles";
+    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
+            new JwtGrantedAuthoritiesConverter();
 
-    private static final Set<String> ALLOWED_ROLES = Set.of("ADMIN", "OPERATOR", "USER");
+    @Value("${jwt.auth.converter.principle-attribute}")
+    private String principleAttribute;
+    @Value("${jwt.auth.converter.resource-id}")
+    private String resourceId;
 
     @Override
-    public Collection<GrantedAuthority> convert(Jwt jwt) {
-        var authoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        Collection<GrantedAuthority> grantedAuthorities = new HashSet<>(authoritiesConverter.convert(jwt));
+    public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
+        Collection<GrantedAuthority> authorities = Stream.concat(
+                jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
+                extractRealmRoles(jwt).stream()
+        ).collect(Collectors.toSet());
 
-        var realmAccess = jwt.getClaimAsMap(REALM_CLAIM);
-        if (realmAccess != null && realmAccess.containsKey(ROLES_CLAIM)) {
-            List<String> roles = (List<String>) realmAccess.get(ROLES_CLAIM);
-            Boolean isTrue = roles.stream().anyMatch(ALLOWED_ROLES::contains);
-            if (!isTrue) {
-                try {
-                    throw new AccessDeniedException("Недостаточно прав");
-                } catch (AccessDeniedException e) {
-                    throw new RuntimeException(e);
-                }
-            }else{
-                grantedAuthorities.addAll(roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-            }
-        }
-
-
-
-        return grantedAuthorities;
+        return new JwtAuthenticationToken(
+                jwt,
+                authorities,
+                getPrincipleClaimName(jwt)
+        );
     }
 
+    private String getPrincipleClaimName(Jwt jwt) {
+        String claimName = JwtClaimNames.SUB;
+        if (principleAttribute != null) {
+            claimName = principleAttribute;
+        }
+        return jwt.getClaim(claimName);
+    }
+
+    private Collection<? extends GrantedAuthority> extractRealmRoles(Jwt jwt) {
+        Map<String, Object> realmAccess;
+        Collection<String> realmRoles;
+
+        if (jwt.getClaim("realm_access") == null) {
+            return Set.of();
+        }
+
+        realmAccess = jwt.getClaim("realm_access");
+
+        realmRoles = (Collection<String>) realmAccess.get("roles");
+
+        if (realmRoles == null) {
+            return Set.of();
+        }
+
+        return realmRoles.stream()
+                .filter(role -> !role.equals("default-roles-master") && !role.equals("offline_access") && !role.equals("uma_authorization"))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toSet());
+    }
 }
