@@ -38,7 +38,7 @@ public class RouteController {
             description = "Add a new route to the system",
             tags = {"Transport API"}
     )
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('OPERATOR')")
     public ResponseEntity<String> addRoute(@RequestBody RouteRequest route, Authentication authentication) {
         System.out.println("User authorities: " + authentication.getAuthorities());
         return ResponseEntity.ok(routeService.addRoute(route));
@@ -49,6 +49,7 @@ public class RouteController {
             description = "Get a route by id from the system",
             tags = {"Transport API"}
     )
+    @PreAuthorize("hasRole('OPERATOR')")
     public ResponseEntity<RouteGetResponse> getRouteById(Long id) {
         return ResponseEntity.ok(routeService.getRouteById(id));
     }

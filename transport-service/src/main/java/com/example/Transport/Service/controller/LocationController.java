@@ -27,6 +27,7 @@ public class LocationController {
             description = "Add a new location to the system",
             tags = {"Transport API"}
     )
+    @PreAuthorize("hasRole('OPERATOR')")
     public ResponseEntity<String> addLocation(@RequestBody LocationRequest location) {
         return ResponseEntity.ok(locationService.addLocation(location));
     }

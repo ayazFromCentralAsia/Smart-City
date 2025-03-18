@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class VehicleController {
                     "it is same for status like ACTIVE, MAINTENANCE, OUT_OF_SERVICE",
             tags = {"Transport API"}
     )
+    @PreAuthorize("hasRole('OPERATOR')")
     public ResponseEntity<String> addVehicle(@RequestBody @Valid VehicleRequest vehicle) {
         return ResponseEntity.ok(vehicleService.addVehicle(vehicle));
     }
@@ -39,6 +41,7 @@ public class VehicleController {
             description = "This API is used to get all vehicles from the system, it can filter by type, status, capacity, current location ID",
             tags = {"Transport API"}
     )
+    @PreAuthorize("hasRole('OPERATOR')")
     public ResponseEntity<List<VehicleResponse>> getAllVehicles(
             @Parameter(description = "Type of transport vehicle, BUS, TRAM, TROLLEY", example = "BUS") @RequestParam(required = false) String type,
             @Parameter(description = "Status of the transport vehicle, ACTIVE, MAINTENANCE, OUT_OF_SERVICE", example = "ACTIVE") @RequestParam(required = false) String status,
@@ -53,6 +56,7 @@ public class VehicleController {
             description = "This API is used to get a vehicle by ID from the system",
             tags = {"Transport API"}
     )
+    @PreAuthorize("hasRole('OPERATOR')")
     public ResponseEntity<VehicleGetResponse> getVehicleById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.getVehicleById(id));
     }
@@ -62,6 +66,7 @@ public class VehicleController {
             description = "This API is used to get a vehicle's location by ID from the system",
             tags = {"Transport API"}
     )
+    @PreAuthorize("hasRole('OPERATOR')")
     public VehicleLocationResponse getVehicleLocation(@PathVariable Long id) {
         return vehicleService.getVehicleLocation(id);
     }

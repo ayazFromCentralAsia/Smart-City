@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -36,6 +37,7 @@ public class TransportController {
     @Operation(summary = "Add new stop to the route",
             description = "Add new stop to the route with the given name and location. ",
             tags = {"Transport API"})
+    @PreAuthorize("hasRole('OPERATOR')")
     public ResponseEntity<String> addStop(@RequestBody StopRequest stopRequest) {
         return ResponseEntity.ok(transportService.addStop(stopRequest));
     }

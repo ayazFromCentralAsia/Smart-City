@@ -1,0 +1,53 @@
+CREATE EXTENSION IF NOT EXISTS cube;
+CREATE EXTENSION IF NOT EXISTS earthdistance;
+
+CREATE TABLE station (
+    id UUID PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    latitude DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
+    startDate DATE NOT NULL,
+    endDate DATE NOT NULL,
+    elevation INT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE air_quality (
+    id SERIAL PRIMARY KEY,
+    station_id UUID NOT NULL,
+    timestamp TIMESTAMPTZ NOT NULL,
+    pm25 DOUBLE PRECISION NOT NULL,
+    pm10 DOUBLE PRECISION NOT NULL,
+    no2 DOUBLE PRECISION NOT NULL,
+    so2 DOUBLE PRECISION NOT NULL,
+    o3 DOUBLE PRECISION NOT NULL,
+    co DOUBLE PRECISION NOT NULL,
+    aqi INT NOT NULL,
+    quality_index VARCHAR(20) CHECK (quality_index IN ('GOOD', 'MODERATE', 'UNHEALTHY', 'HAZARDOUS')) NOT NULL
+);
+
+CREATE TABLE noise_level (
+    id SERIAL PRIMARY KEY,
+    station_id UUID NOT NULL,
+    timestamp TIMESTAMPTZ NOT NULL,
+    decibel_level DOUBLE PRECISION NOT NULL,
+    classification VARCHAR(20) CHECK (classification IN ('LOW', 'MODERATE', 'HIGH', 'DANGEROUS')) NOT NULL
+);
+
+CREATE TABLE weather (
+    id SERIAL PRIMARY KEY,
+    station_id UUID NOT NULL,
+    date DATE NOT NULL,
+    timestamp TIMESTAMPTZ NOT NULL,
+    temperature DOUBLE PRECISION NOT NULL,
+    humidity DOUBLE PRECISION NOT NULL,
+    wind_speed DOUBLE PRECISION NOT NULL,
+    wind_direction DOUBLE PRECISION NOT NULL,
+    precipitation DOUBLE PRECISION NOT NULL,
+    condition TEXT NOT NULL
+);
+
+ALTER TABLE air_quality ADD FOREIGN KEY (station_id) REFERENCES station(id);
+ALTER TABLE noise_level ADD FOREIGN KEY (station_id) REFERENCES station(id);
+ALTER TABLE weather ADD FOREIGN KEY (station_id) REFERENCES station(id);

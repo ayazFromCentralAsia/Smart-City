@@ -11,6 +11,9 @@
 	<modules>
 		<module>auth-service</module>
 		<module>transport-service</module>
+		<module>environment-service</module>
+		<module>api-gateway</module>
+		<module>discovery-service</module>
 	</modules>
 	<groupId>com.example</groupId>
 	<artifactId>Smart-City</artifactId>
