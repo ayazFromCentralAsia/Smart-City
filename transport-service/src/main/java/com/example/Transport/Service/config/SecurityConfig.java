@@ -47,37 +47,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-//    @Bean
-//    public JwtDecoder jwtDecoder() {
-//        return NimbusJwtDecoder.withJwkSetUri("http://localhost:8181/realms/master/protocol/openid-connect/certs").build();
-//    }
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf()
-//                .disable() // Отключаем CSRF для REST API
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless сессии для REST
-//                .authorizeHttpRequests(authz -> authz
-//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll() // Разрешаем доступ к Swagger без аутентификации
-//                        .requestMatchers("/api/transport/route/add").hasAuthority("ADMIN") // Доступ только для пользователей с правами ADMIN
-//                        .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
-//                )
-//                .oauth2ResourceServer(oauth2 -> oauth2
-//                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)) // Настройка для использования JwtAuthenticationConverter
-//                );
-//
-//        return http.build();
-//    }
-//    @Bean
-//    public Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter() {
-//        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
-//        authoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
-//
-//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
-//
-//        return jwtAuthenticationConverter;
-//    }
-
 }
