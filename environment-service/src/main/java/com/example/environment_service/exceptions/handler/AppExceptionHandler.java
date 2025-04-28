@@ -1,5 +1,6 @@
 package com.example.environment_service.exceptions.handler;
 
+import com.example.environment_service.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
+
+import java.lang.IllegalArgumentException;
 
 @RestControllerAdvice
 @Slf4j

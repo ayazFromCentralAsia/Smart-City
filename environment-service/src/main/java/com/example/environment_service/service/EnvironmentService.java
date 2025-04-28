@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -81,7 +82,7 @@ public class EnvironmentService {
         return airQualityRepository.findNearestAirQualities(latitude, longitude, radius);
     }
 
-    public List<AirQuality> getAirQualityHistory(UUID stationId, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<AirQuality> getAirQualityHistory(UUID stationId, Instant startDate, Instant endDate) {
         return airQualityRepository.findAirQualityHistory(stationId, startDate, endDate);
     }
 
@@ -93,7 +94,7 @@ public class EnvironmentService {
         return weatherRepository.findNearestWeather(latitude, longitude);
     }
 
-    public List<Weather> getWeatherForecast(double latitude, double longitude, int days) {
+    public List<Weather> getWeatherForecast(double latitude, double longitude, Instant days) {
         return weatherRepository.findWeatherForecast(latitude, longitude, days);
     }
 }

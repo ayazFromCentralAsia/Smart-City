@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -52,8 +53,8 @@ public class EnvironmentController {
     @Operation(summary = "Get air quality history", description = "Retrieve historical air quality data.")
     public ResponseEntity<List<AirQuality>> getAirQualityHistory(
             @RequestParam UUID stationId,
-            @RequestParam LocalDateTime startDate,
-            @RequestParam LocalDateTime endDate) {
+            @RequestParam Instant startDate,
+            @RequestParam Instant endDate) {
         return ResponseEntity.ok(environmentService.getAirQualityHistory(stationId, startDate, endDate));
     }
 
@@ -81,7 +82,7 @@ public class EnvironmentController {
     public ResponseEntity<List<Weather>> getWeatherForecast(
             @RequestParam double latitude,
             @RequestParam double longitude,
-            @RequestParam int days) {
+            @RequestParam Instant days) {
         return ResponseEntity.ok(environmentService.getWeatherForecast(latitude, longitude, days));
     }
 }

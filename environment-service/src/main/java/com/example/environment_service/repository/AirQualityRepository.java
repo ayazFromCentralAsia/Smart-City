@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -29,5 +30,5 @@ public interface AirQualityRepository extends JpaRepository<AirQuality, Long> {
                                              @Param("radius") double radius);
 
     @Query("SELECT a FROM AirQuality a WHERE a.station.id = :stationId AND a.timestamp BETWEEN :startTime AND :endTime")
-    List<AirQuality> findAirQualityHistory(UUID stationId, LocalDateTime startTime, LocalDateTime endTime);
+    List<AirQuality> findAirQualityHistory(UUID stationId, Instant startTime, Instant endTime);
 }
