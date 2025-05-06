@@ -21,7 +21,6 @@ public class LocationController {
 
     private final LocationService locationService;
 
-    @PreAuthorize("hasRole('ROLE_OPERATOR')")
     @PostMapping("/add")
     @Operation(summary = "Add a new location",
             description = "Add a new location to the system",
