@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/transport/location")
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "Transport", description = "Transport API")
+@Tag(name = "Transport API", description = "Transport API")
 public class LocationController {
 
     private final LocationService locationService;

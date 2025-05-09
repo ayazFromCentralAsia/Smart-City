@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/transport/vehicle")
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "Transport", description = "Transport API")
+@Tag(name = "Transport API", description = "Transport API")
 public class VehicleController {
 
     private final VehicleService vehicleService;

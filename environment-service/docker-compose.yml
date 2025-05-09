@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  backend:
+    image: environment-service-backend:latest
+    container_name: environment-service-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - DB_testing
+    environment:
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://DB_testing:5432/environment_service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123321
+    networks:
+      - app_network
+
+  DB_testing:
+    image: postgres
+    restart: always
+    container_name: postgres-environment-service
+    ports:
+      - "4334:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123321
+      POSTGRES_DB: environment_service
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+volumes:
+  db_data:
+
+networks:
+  app_network:
+    driver: bridge

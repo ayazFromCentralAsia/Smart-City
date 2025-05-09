@@ -22,7 +22,7 @@ public class IncidentsController {
     @Operation( summary = "Список инцидентов",
             description = "Возвращает список инцидентов в городе, которые соответствуют указанным параметрам." )
     public List<IncidentByFilterResponse> getIncidentsByFilter(
-            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Incident.Status status,
             @RequestParam(required = false) String type) {
         return incidentsService.getIncidentsByFilter(status, type);
     }
@@ -30,14 +30,14 @@ public class IncidentsController {
     @GetMapping("/incidents/{id}")
     @Operation( summary = "Детали инцидента",
             description = "Возвращает детали инцидента по его идентификатору." )
-    public Incident getIncidentById(@PathVariable("id") Integer id) {
+    public String getIncidentById(@PathVariable("id") Integer id) {
         return incidentsService.getIncidentById(id);
     }
 
     @PostMapping("/incidents")
     @Operation( summary = "Создание инцидента",
             description = "Создает новый инцидент в городе." )
-    public Incident createIncident(@RequestBody IncidentRequest incident) {
+    public String createIncident(@RequestBody IncidentRequest incident) {
         return incidentsService.createIncident(incident);
     }
 

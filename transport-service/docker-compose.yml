@@ -4,12 +4,10 @@ services:
   backend:
     image: transport-service-backend:latest
     container_name: transport-service-backend
-    ports:
-      - "8080:8080"
+    ports: []
     depends_on:
       - DB_testing
     environment:
-      SERVER_PORT: 8080
       SPRING_DATASOURCE_URL: jdbc:postgresql://DB_testing:5432/transport_service
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 123321
@@ -25,7 +23,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123321
-      POSTGRES_DB: postgres
+      POSTGRES_DB: transport-service
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:

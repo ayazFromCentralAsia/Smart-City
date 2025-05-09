@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,8 +27,8 @@ public class HotspotsController {
             description = "Метод для получения списко горячих точек. " +
                     "За какое то время. Требывания нужно указать число в таком виде 2022-01-01T12:00:00Z")
     public List<HotspotResponse> getAllHotspots(
-            @RequestParam(name = "from", required = false, defaultValue = "2022-01-01T12:00:00Z") String from,
-            @RequestParam(name = "to", required = false, defaultValue = "2022-01-01T12:00:00Z") String to) {
+            @RequestParam(name = "from", required = false, defaultValue = "2022-01-01T12:00:00Z") ZonedDateTime from,
+            @RequestParam(name = "to", required = false, defaultValue = "2022-01-01T12:00:00Z") ZonedDateTime to) {
         return hotspotsServiceInterface.getHotspotsByTime(from, to);
     }
 

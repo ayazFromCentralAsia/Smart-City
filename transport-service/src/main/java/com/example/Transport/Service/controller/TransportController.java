@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/transport")
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "Transport", description = "Transport API")
+@Tag(name = "Transport API", description = "Transport API")
 public class TransportController {
 
     private final TransportService transportService;
