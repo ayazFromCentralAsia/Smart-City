@@ -1,22 +1,31 @@
 version: '3.8'
 
 services:
-  backend:
+  discovery-service-backend:
+    image: discovery-service-backend:latest
+    container_name: discovery-service-backend
+    ports:
+      - "8761:8761"
+    environment:
+      SERVER_PORT: 8761
+    networks:
+      - app_network
+
+  environment-service-backend:
     image: environment-service-backend:latest
     container_name: environment-service-backend
-    ports:
-      - "8080:8080"
+    ports: []
     depends_on:
-      - DB_testing
+      - DB_environment_testing
+      - discovery-service-backend
     environment:
-      SERVER_PORT: 8080
-      SPRING_DATASOURCE_URL: jdbc:postgresql://DB_testing:5432/environment_service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://DB_environment_testing:5432/environment_service
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 123321
     networks:
       - app_network
 
-  DB_testing:
+  DB_environment_testing:
     image: postgres
     restart: always
     container_name: postgres-environment-service
