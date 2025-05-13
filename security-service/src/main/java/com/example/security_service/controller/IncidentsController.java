@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/security")
 @Tag(name = "Incidents", description = "Контроллер для управления инцидентами в городе.")
 public class IncidentsController {
     private final IncidentsServiceInterface incidentsService;

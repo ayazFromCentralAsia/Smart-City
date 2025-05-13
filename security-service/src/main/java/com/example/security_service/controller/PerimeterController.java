@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/security")
 @Tag( name= "Perimeter", description = "Контроллеры для управления пермиметрами" )
 public class PerimeterController {
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/security")
 @Tag(name = "Hotspots", description = "Контроллер для работы с горячими точками в городе")
 public class HotspotsController {
 

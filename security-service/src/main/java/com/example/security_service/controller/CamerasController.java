@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/security")
 @Tag(name = "Cameras", description = "Контроллер для работы с камерами")
 public class CamerasController {
     private final CamerasServiceInterface camerasServiceInterface;

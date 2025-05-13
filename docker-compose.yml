@@ -11,12 +11,23 @@ services:
     networks:
       - app_network
 
+  api-gateway-backend:
+    image: api-gateway-backend:latest
+    container_name: api-gateway-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-service-backend
+    networks:
+      - app_network
+
   environment-service-backend:
     image: environment-service-backend:latest
     container_name: environment-service-backend
     ports: []
     depends_on:
       - DB_environment_testing
+      - api-gateway-backend
       - discovery-service-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://DB_environment_testing:5432/environment_service
@@ -31,6 +42,7 @@ services:
     ports: [ ]
     depends_on:
       - DB_security_testing
+      - api-gateway-backend
       - discovery-service-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://DB_security_testing:5432/security_service
@@ -39,12 +51,22 @@ services:
     networks:
       - app_network
 
+  auth-service-backend:
+    image: auth-service-backend:latest
+    container_name: auth-service-backend
+    ports: [ ]
+    depends_on:
+      - api-gateway-backend
+      - discovery-service-backend
+    networks:
+      - app_network
+
   DB_security_testing:
     image: postgres
     restart: always
     container_name: postgres-security-service
     ports:
-      - "4336:5433"
+      - "4336:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123321
@@ -59,6 +81,7 @@ services:
     container_name: transport-service-backend
     ports: [ ]
     depends_on:
+      - api-gateway-backend
       - DB_transport_testing
       - discovery-service-backend
     environment:
@@ -73,7 +96,7 @@ services:
     restart: always
     container_name: postgres-transport-service
     ports:
-      - "4335:5433"
+      - "4335:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123321
